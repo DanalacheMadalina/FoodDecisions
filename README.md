@@ -16,11 +16,17 @@ Food Decisions este o aplicatie dezvoltata in ASP.NET. Partea de front-end conti
 <h4>Computer Vision API</h4>
 <p>Pe caz particular, am folosit acest api pentru recunoasterea numelui ingredientului introdus de utilizator fie prin poza locala, fie prin URL.</p>
 <p>Tin sa mentionez ca acest API nu este unul foarte exact, iar ingredientele pe care am testat si sunt recunoscute cu succes: para, mar, portocala, carne, peste. </p>
+<div style="display: inline-block">
 <img src="https://www.simplyrecipes.com/thmb/ZbU8zUnkfgPcDFeWc8xT6zKwQfI=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2014__07__hard-boiled-eggs-horiz-800-429f7e9948b84a6d84237e228f9d54f2.jpg" width="150px" alt="Egg" >
+</div>
+<div style="display: inline-block" >
 <img src="images\fruit.jpg" width="150px" alt="fruits">
+<div style="display: inline-block" >
 <img src="https://www.incimages.com/uploaded_files/image/1024x576/getty_80116649_344560.jpg" width="150px" alt="Meat" >
+</div>
+<div style="display: inline-block" >
 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY_7Gk-BCz12QvxUW-aRxQFmb41QeUoSnm5sBmV3fD4wmRFsxG6h0wFaMe-8_Zb3Xehf4&usqp=CAU" width="150px" alt="Fish" >
-
+</div>
 
 <p>De asemenea, aceasta recunoastere a imaginii tine si formatul pozei( cele suportate sunt: JPEG, PNG, GIF, BMP), de marimea pozei (cel putin 50x50) si de dimensiunea ei ( mai putin de 4 MB).</p>
 
@@ -269,9 +275,8 @@ Dupa upload-ul imaginii, se afiseaza response-ul api-ului de recunoastere de ima
 <img src="images/Home_API_Result.PNG" alt="api result image">
 
 Daca dam click pe o reteta, ni se vor afisa informatii suplimentare despre aceasta, printr-un alt call de API.
-<img src="API_Details_1.PNG" alt="receipe details">
-<img src="API_Details_2.PNG" alt="receipe details">
+<img src="API_Details_1.PNG" alt="receipe details1">
+<img src="API_Details_2.PNG" alt="receipe details2">
 
 Pe tab-ul "Meet the owner" sunt prezente cateva informatii despre mine, precum si pagini de contact (Facebook, LinkedIn, GitHub)
 <img src="About_Me.PNG" alt="about me page">
-![about_me_image](images/About_Me.PNG)
