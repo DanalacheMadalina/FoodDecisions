@@ -1,6 +1,6 @@
 # Food Decisions App
 
-<center><img src="images/Logo.PNG" width="200px" alt="Egg" ></center>
+<p align="center"><img src="images/Logo.PNG" width="200px" alt="Egg" ></p>
 
 ## Introducere 
 <p>Food Decisions are ca scop oferirea unor idei de retete pe baza ingredientelor pe care utilizatorul le incarca printr-o poza specifica. Poza incarcata poate fi un fisier din calculatorul personal sau o adresa URL.</p>
