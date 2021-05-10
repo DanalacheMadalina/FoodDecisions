@@ -1,5 +1,6 @@
 # Food Decisions App
 
+<center><img src="images/Logo.PNG" width="200px" alt="Egg" ></center>
 
 ## Introducere 
 <p>Food Decisions are ca scop oferirea unor idei de retete pe baza ingredientelor pe care utilizatorul le incarca printr-o poza specifica. Poza incarcata poate fi un fisier din calculatorul personal sau o adresa URL.</p>
@@ -17,10 +18,10 @@ Food Decisions este o aplicatie dezvoltata in ASP.NET. Partea de front-end conti
 <p>Pe caz particular, am folosit acest api pentru recunoasterea numelui ingredientului introdus de utilizator fie prin poza locala, fie prin URL.</p>
 <p>Tin sa mentionez ca acest API nu este unul foarte exact, iar ingredientele pe care am testat si sunt recunoscute cu succes: para, mar, portocala, carne, peste. </p>
 <div style="display: inline-block">
-<img src="https://www.simplyrecipes.com/thmb/ZbU8zUnkfgPcDFeWc8xT6zKwQfI=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2014__07__hard-boiled-eggs-horiz-800-429f7e9948b84a6d84237e228f9d54f2.jpg" width="150px" alt="Egg" >
-<img src="images\fruit.jpg" width="150px" alt="fruits">
-<img src="https://www.incimages.com/uploaded_files/image/1024x576/getty_80116649_344560.jpg" width="150px" alt="Meat" >
-<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY_7Gk-BCz12QvxUW-aRxQFmb41QeUoSnm5sBmV3fD4wmRFsxG6h0wFaMe-8_Zb3Xehf4&usqp=CAU" width="150px" alt="Fish" >
+<img src="https://www.simplyrecipes.com/thmb/ZbU8zUnkfgPcDFeWc8xT6zKwQfI=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__simply_recipes__uploads__2014__07__hard-boiled-eggs-horiz-800-429f7e9948b84a6d84237e228f9d54f2.jpg" width="170px" alt="Egg" >
+<img src="images\fruit.jpg" width="170px" alt="fruits">
+<img src="https://www.incimages.com/uploaded_files/image/1024x576/getty_80116649_344560.jpg" width="170px" alt="Meat" >
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY_7Gk-BCz12QvxUW-aRxQFmb41QeUoSnm5sBmV3fD4wmRFsxG6h0wFaMe-8_Zb3Xehf4&usqp=CAU" width="170px" alt="Fish" >
 </div>
 
 <p>De asemenea, aceasta recunoastere a imaginii tine si formatul pozei( cele suportate sunt: JPEG, PNG, GIF, BMP), de marimea pozei (cel putin 50x50) si de dimensiunea ei ( mai putin de 4 MB).</p>
@@ -43,7 +44,16 @@ var result = client.PostAsync(endpoint + "vision/v3.0/detect", content).Result;
 API Call:
 
 ```
-POST: https://proiectcloud.cognitiveservices.azure.com/vision/v3.0/detect?content={url}
+POST: https://proiectcloud.cognitiveservices.azure.com/vision/v3.0/detect
+
+Pentru imagine din URL:
+BODY: { "url": "IMAGE_URL" }
+Datele trimise in body sa fie de tip "Content-Type": "application/json"
+
+Pentru upload de imagine:
+BODY: [Binary image data]
+Datele trimise in body sa fie de tip "Content-Type": "application/octet-stream"
+
 ```
 
 Response-ul este un JSON pe care il deserializam si il introducem intr-o lista de ingrediente.
@@ -138,7 +148,7 @@ Putem observa ca acest api necesita autentificarea printr-un apiKey si trebuie s
 <p>Caz particular:</p>
 
 ```
-GET: https://api.spoonacular.com/recipes/findByIngredients?ingredients=Pear,%2BApple&number=6&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
+GET: https://api.spoonacular.com/recipes/findByIngredients?ingredients=Pear,+Apple&number=6&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
 ```
 
 Response-ul va fi un JSON pe care l-am deserializat si introdus intr-un listview.
