@@ -2,61 +2,60 @@
 
 
 ## Introducere 
-Food Decisions are ca scop oferirea unor idei de retete pe baza ingredientelor pe care utilizatorul le incarca printr-o poza specifica. Poza incarcata poate fi un fisier din calculatorul personal sau o adresa URL.
+	Food Decisions are ca scop oferirea unor idei de retete pe baza ingredientelor pe care utilizatorul le incarca printr-o poza specifica. Poza incarcata poate fi un fisier din calculatorul personal sau o adresa URL.
 Prin apasarea functionalitatii de vizualizare detalii despre o reteta, se va afisa o lista de informatii suplimentare precum: timp de preparare, costul, numarul de portii, ingredientele necesare, o scurta descriere si de asemenea, o lista de nutrieni, printre care se afla si numarul de calorii, fiind in multe cazuri un factor decizional in alegerea gospodinelor/bucatarilor.
-Aplicatia se adreseaza tuturor categoriilor de utilizatori, indiferent de sex, care vor sa incerce retete noi cu alimentele ce le au la indemana.
+<p>Aplicatia se adreseaza tuturor categoriilor de utilizatori, indiferent de sex, care vor sa incerce retete noi cu alimentele ce le au la indemana.</p>
 
 
 ## Descriere Problema 
-Ideea aplicatiei a pornit de la faptul ca multi dintre noi se afla in situatia in care avem anumite alimente in frigider, insa nu stim ce putem gati cu acestea sau in ce combinatie sa le mancam. Astfel, aceste alimente sfarsesc prin a se strica sau a expira, ajungand in cele din urma, la cosul de gunoi.
+	Ideea aplicatiei a pornit de la faptul ca multi dintre noi se afla in situatia in care avem anumite alimente in frigider, insa nu stim ce putem gati cu acestea sau in ce combinatie sa le mancam. Astfel, aceste alimente sfarsesc prin a se strica sau a expira, ajungand in cele din urma, la cosul de gunoi.
 Aplicatia sporeste creativitatea utilizatorilor prin multitudinea de retete oferite, si diminueaza risipa de hrana, avand un impact pozitiv asupra mediului.
 
 ## Descriere API
-Food Decisions este o aplicatie dezvoltata in ASP.NET. Partea de front-end contine o interfata scrisa in HTML, CSS, JavaScript, iar partea de back-end scrisa in C# permite accesul la datele din 2 API-uri(Computer Vision de la Microsoft si Spoonacular) prin request si response.
-####*Computer Vision API
-Acest API ofera algoritmi specializati in procesarea imaginilor si returnarea informatiilor despre acesta. Poate recunoaste orice obiect sau corp si determina caracteristici precum: culorile dominante si accentul, clasificarea continutului imaginilor si descrierea unei imagini intr-o propozitie completa.
-Pe caz particular, am folosit acest api pentru recunoasterea numelui ingredientului introdus de utilizator fie prin poza locala, fie prin URL.
-Tin sa mentionez ca acest API nu este unul foarte exact, iar ingredientele pe care am testat si sunt recunoscute cu succes: para, mara, portocala, cartof. 
+	Food Decisions este o aplicatie dezvoltata in ASP.NET. Partea de front-end contine o interfata scrisa in HTML, CSS, JavaScript, iar partea de back-end scrisa in C# permite accesul la datele din 2 API-uri(Computer Vision de la Microsoft si Spoonacular) prin request si response.
+*Computer Vision API
+<p>Pe caz particular, am folosit acest api pentru recunoasterea numelui ingredientului introdus de utilizator fie prin poza locala, fie prin URL.</p>
+<p>Tin sa mentionez ca acest API nu este unul foarte exact, iar ingredientele pe care am testat si sunt recunoscute cu succes: para, mara, portocala, cartof. </p>
 ![fruit_image](images/fruit.jpg)
-De asemenea, aceasta recunoastere a imaginii tine si formatul pozei( cele suportate sunt: JPEG, PNG, GIF, BMP), de marimea pozei (cel putin 50x50) si de dimensiunea ei ( mai putin de 4 MB).
+<p>De asemenea, aceasta recunoastere a imaginii tine si formatul pozei( cele suportate sunt: JPEG, PNG, GIF, BMP), de marimea pozei (cel putin 50x50) si de dimensiunea ei ( mai putin de 4 MB).</p>
 
 Request-ul este realizat prin urmatoarele linii de cod:
-	```bash
-        static string subscriptionKey = "47543aa0b4184337a33053f940a7935e";
-        static string endpoint = "https://proiectcloud.cognitiveservices.azure.com/";
+```bash
+static string subscriptionKey = "47543aa0b4184337a33053f940a7935e";
+static string endpoint = "https://proiectcloud.cognitiveservices.azure.com/";
 
-		client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
-		client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
+client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
+client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
 
-		var content = new ByteArrayContent(localImage.FileBytes);
-		content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+var content = new ByteArrayContent(localImage.FileBytes);
+content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
-		var result = client.PostAsync(endpoint + "vision/v3.0/detect", content).Result;
-	```
+var result = client.PostAsync(endpoint + "vision/v3.0/detect", content).Result;
+```
 		
 Acest API necesita autentificarea printr-o cheie unica. GET-ul se realizeaza prin concatenarea endpoint cu versiunea api-ului si content-ul care poate fi o imagine locala sau din URL(aplicatia are 2 metode separate pentru fieccare tip de upload).
-API Call:
-	```bash
-	POST: https://proiectcloud.cognitiveservices.azure.com/vision/v3.0/detect + content 
-	```
+<p>API Call:</p>
+```bash
+POST: https://proiectcloud.cognitiveservices.azure.com/vision/v3.0/detect + content 
+```
 
 Response-ul este un JSON pe care il deserializam si il introducem intr-o lista de ingrediente.
-	```bash
-		responseData = result.Content.ReadAsStringAsync().Result;
-		dynamic dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
+```bash
+responseData = result.Content.ReadAsStringAsync().Result;
+dynamic dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
 
-		foreach (var receipe in dynamicJson["objects"])
-		{
-			var receipeElement = receipe["object"];
-			if (ingredientsForReceipe.Contains(receipeElement))
-			{
-				continue;
-			}
-			ingredientsForReceipe.Add(receipeElement);
-		}
-	```
+foreach (var receipe in dynamicJson["objects"])
+{
+	var receipeElement = receipe["object"];
+	if (ingredientsForReceipe.Contains(receipeElement))
+	{
+		continue;
+	}
+	ingredientsForReceipe.Add(receipeElement);
+}
+```
 Exemplu JSON:
-	```bash
+```bash
 [
 	{
       "objects":[
@@ -105,46 +104,45 @@ Exemplu JSON:
       }
    }
 ]
-	```
+```
 
-
-####*Spoonacular API 
-Este un API specializat pentru alimente si are ca functionalitati Analiza retelor, Gestionarea Retetelor si Planificarea meselor.
+*Spoonacular API 
+<p>Este un API specializat pentru alimente si are ca functionalitati Analiza retelor, Gestionarea Retetelor si Planificarea meselor. </p>
 Functionalitatile folosite sunt:
-	1.Cautarea retetelor dupa ingrediente
+	1. Cautarea retetelor dupa ingrediente
 Daca te-ai intrebat vreodata ce poti gati cu ingredientele pe care la ai in frigider sau camara, spoonacular ofera retete care fie maximizeaza utilizearea ingredientelor pe care le aveti la indemana, fie minimeaza ingredientele pe care nu le aveti in prezent.
 Acest API este utilizat in special in aplicatiile de tipul "What's in your fridge".
 Exemplu de request:
-	```bash
-		var baseAddress = "https://api.spoonacular.com/";
-		var queryParams = new Dictionary<string, string>()
-		{
-			{ "ingredients", ingredients },
-			{ "number", "6" },
-			{ "apiKey", "48459edeaadf4a27a8d1e5bc8f0796a4" }
-		};
-		var url = QueryHelpers.AddQueryString(baseAddress + "recipes/findByIngredients", queryParams);
-	```
-Putem observa ca acest api necesita autentificarea printr-un apiKey si trebuie sa ii dam ca parametri denumirea ingredientelor si numarul de retete pe care dorim sa ni le afiseze.
-Caz particular:
 ```bash
-	GET: https://api.spoonacular.com/recipes/findByIngredients?ingredients=Pear,%2BApple&number=6&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
+var baseAddress = "https://api.spoonacular.com/";
+var queryParams = new Dictionary<string, string>()
+{
+	{ "ingredients", ingredients },
+	{ "number", "6" },
+	{ "apiKey", "48459edeaadf4a27a8d1e5bc8f0796a4" }
+};
+var url = QueryHelpers.AddQueryString(baseAddress + "recipes/findByIngredients", queryParams);
+```
+Putem observa ca acest api necesita autentificarea printr-un apiKey si trebuie sa ii dam ca parametri denumirea ingredientelor si numarul de retete pe care dorim sa ni le afiseze.
+<p>Caz particular:</p>
+```bash
+GET: https://api.spoonacular.com/recipes/findByIngredients?ingredients=Pear,%2BApple&number=6&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
 ```
 
 Response-ul va fi un JSON pe care l-am deserializat si introdus intr-un listview.
-	```bash
-		var responseTask = client.GetAsync(url);
-		responseTask.Wait();
+```bash
+var responseTask = client.GetAsync(url);
+responseTask.Wait();
 
-		var result = responseTask.Result;
-		if (result.IsSuccessStatusCode)
-		{
-			responseData = result.Content.ReadAsStringAsync().Result;
-			dynamic dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
-			receipeList.DataSource = dynamicJson;
-			receipeList.DataBind();
-		}
-	```
+var result = responseTask.Result;
+if (result.IsSuccessStatusCode)
+{
+	responseData = result.Content.ReadAsStringAsync().Result;
+	dynamic dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
+	receipeList.DataSource = dynamicJson;
+	receipeList.DataBind();
+}
+```
 Exemplu JSON:
 ```bash
 [
@@ -180,34 +178,34 @@ Exemplu JSON:
     }
 ]
 ```
-	2.Oferirea de detalii suplimentare a unei retete generate anterior pe baza id-ului acesteia.
+	2. Oferirea de detalii suplimentare a unei retete generate anterior pe baza id-ului acesteia.
 ```bash
-	var baseAddress = "https://api.spoonacular.com/";
-	var queryParams = new Dictionary<string, string>()
-	{
-		{ "includeNutrition", "true" },
-		{ "apiKey", "48459edeaadf4a27a8d1e5bc8f0796a4" }
-	};
-	var url = QueryHelpers.AddQueryString(baseAddress + "recipes/" + receipeId + "/information", queryParams);
+var baseAddress = "https://api.spoonacular.com/";
+var queryParams = new Dictionary<string, string>()
+{
+	{ "includeNutrition", "true" },
+	{ "apiKey", "48459edeaadf4a27a8d1e5bc8f0796a4" }
+};
+var url = QueryHelpers.AddQueryString(baseAddress + "recipes/" + receipeId + "/information", queryParams);
 ```
-Caz particular
+<p>Caz particular: </p>
 ```bash
-	GET: https://api.spoonacular.com/recipes/642554/information?includeNutrition=true&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
+GET: https://api.spoonacular.com/recipes/642554/information?includeNutrition=true&apiKey=48459edeaadf4a27a8d1e5bc8f0796a4
 ```
 
 Response-ul va fi tot un JSON pe care l-am tratat in acest mod:
-	```bash	
-		var responseTask = client.GetAsync(url);
+```bash	
+var responseTask = client.GetAsync(url);
 
-		responseTask.Wait();
+responseTask.Wait();
 
-		var result = responseTask.Result;
-		if (result.IsSuccessStatusCode) {
-			responseData = result.Content.ReadAsStringAsync().Result;
-			dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
-		}
-	```			
-Exemplu JSON:
+var result = responseTask.Result;
+if (result.IsSuccessStatusCode) {
+	responseData = result.Content.ReadAsStringAsync().Result;
+	dynamicJson = JsonConvert.DeserializeObject(responseData.ToString());
+}
+```			
+<p>Exemplu JSON:</p>
 ```bash
 [
    {
@@ -247,11 +245,11 @@ Exemplu JSON:
 
 ## Interfețe aplicație
 La prima deschidere a aplicatiei, se va afisa pagina de HOME.
-![home_image](images/home.png)
+![home_image](images/home.PNG)
 Dupa upload-ul imaginii, se afiseaza response-ul api-ului de recunoastere de imagini si afisare de retete.
-![api_result_image](images/Home_API_Result.png)
+![api_result_image](images/Home_API_Result.PNG)
 Daca dam click pe o reteta, ni se vor afisa informatii suplimentare despre aceasta, printr-un alt call de API.
-![fruit_image](images/API_Details_1.png)
-![fruit_image](images/API_Details_2.png)
+![fruit_image](images/API_Details_1.PNG)
+![fruit_image](images/API_Details_2.PNG)
 Pe tab-ul "Meet the owner" sunt prezente cateva informatii despre mine, precum si pagini de contact (Facebook, LinkedIn, GitHub)
-![about_me_image](images/About_Me.png)
+![about_me_image](images/About_Me.PNG)
