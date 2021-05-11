@@ -275,7 +275,8 @@ if (result.IsSuccessStatusCode) {
 
 <img src="images/data_flow.PNG" alt="dataflow">
 
-##Interfețe aplicație
+
+## Interfețe aplicație
 
 <p> La prima deschidere a aplicatiei, se va afisa pagina de HOME.</p>
 <img src="images/home.PNG" alt="home image">
