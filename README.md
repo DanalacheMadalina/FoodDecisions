@@ -9,7 +9,7 @@
 
 
 ## Descriere Problema 
-Ideea aplicatiei a pornit de la faptul ca multi dintre noi se afla in situatia in care avem anumite alimente in frigider, insa nu stim ce putem gati cu acestea sau in ce combinatie sa le mancam. Astfel, aceste alimente sfarsesc prin a se strica sau a expira, ajungand in cele din urma, la cosul de gunoi.
+Ideea aplicatiei a pornit de la faptul ca multi dintre noi se afla in situatia in care avem anumite alimente in frigider, insa nu stim ce putem gati cu acestea. Astfel, aceste alimente sfarsesc prin a se strica sau a expira, ajungand in cele din urma, la cosul de gunoi.
 <p>Aplicatia sporeste creativitatea utilizatorilor prin multitudinea de retete oferite, si diminueaza risipa de hrana, avand un impact pozitiv asupra mediului.</p>
 
 ## Descriere API
@@ -271,6 +271,9 @@ if (result.IsSuccessStatusCode) {
    ....
 ]
 ```	
+## Flux de date
+
+<img src="images/data_flow.PNG" alt="dataflow">
 
 ##Interfețe aplicație
 

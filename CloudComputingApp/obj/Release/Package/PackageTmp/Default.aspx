@@ -15,7 +15,7 @@
      <div class="home-description">
        <p class="description"> Do you have any ingredients and you have no idea what to cook with them? </p>
        <p class="description"> We have the solution! </p>
-       <img src="/Content/Images/Logo.png" alt="" class="description-img">
+       <img src="https://github.com/DanalacheMadalina/FoodDecisions/raw/main/images/Logo.PNG" alt="logo" class="description-img">
 
     </div>
     <div id="toast" aria-live="polite" aria-atomic="true">
@@ -163,7 +163,6 @@
         </div>
     </div>
    
-
     <asp:UpdatePanel class="uploadImage" ID="UpdatePanel" runat="server">
         <Triggers>
             <asp:PostBackTrigger ControlID="btnUploadFile" /> 
